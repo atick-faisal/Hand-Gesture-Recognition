@@ -243,10 +243,10 @@ def get_model():
 
 def main():
     # ------- Comment This if already downloaded -------- #
-    # destination = os.path.join(BASE_DIR, DATA_DIR)
-    # download_data(DATASET_ID, destination)
+    destination = os.path.join(BASE_DIR, DATA_DIR)
+    download_data(DATASET_ID, destination)
 
-    # generate_bw_images()
+    generate_bw_images()
 
     X_train_xy, X_test_xy, y_train_xy, y_test_xy = load_data('XY')
     X_train_yz, X_test_yz, y_train_yz, y_test_yz = load_data('YZ')
