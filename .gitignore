@@ -134,4 +134,5 @@ dmypy.json
 Sensor-Data/
 BW-Spatial-Path-Images/
 RGB-Spatial-Path-Images/
+Spectrogram-Images/
 Models/
