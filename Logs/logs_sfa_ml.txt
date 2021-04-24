@@ -1,0 +1,339 @@
+
+RandomForestClassifier(
+        n_estimators      = 40,
+        criterion         = 'gini',
+        max_depth         = None,
+        random_state      = 42,
+        verbose           = 0
+)
+
+DYNAMIC_ACC_ONLY_CUT_OFF_40_ORDER_4
+Average accuracy for user 001... 0.70625
+Average accuracy for user 002... 0.75
+Average accuracy for user 003... 0.84375
+Average accuracy for user 004... 0.44375
+Average accuracy for user 005... 0.75
+Average accuracy for user 006... 0.7875
+Average accuracy for user 007... 0.84375
+---------------------------------------
+Average Accuracy on ALL users -> 0.7321428571428571
+
+DYNAMIC_ACC_ONLY_CUT_OFF_20_ORDER_4
+Average accuracy for user 001... 0.75625
+Average accuracy for user 002... 0.775
+Average accuracy for user 003... 0.84375
+Average accuracy for user 004... 0.50625
+Average accuracy for user 005... 0.73125
+Average accuracy for user 006... 0.75
+Average accuracy for user 007... 0.81875
+---------------------------------------
+Average Accuracy on ALL users -> 0.7401785714285714
+
+DYNAMIC_ACC_ONLY_CUT_OFF_10_ORDER_4
+Average accuracy for user 001... 0.71875
+Average accuracy for user 002... 0.81875
+Average accuracy for user 003... 0.8625
+Average accuracy for user 004... 0.45625
+Average accuracy for user 005... 0.74375
+Average accuracy for user 006... 0.76875
+Average accuracy for user 007... 0.83125
+---------------------------------------
+Average Accuracy on ALL users -> 0.7428571428571429
+
+DYNAMIC_ACC_ONLY_CUT_OFF_5_ORDER_4
+Average accuracy for user 001... 0.74375
+Average accuracy for user 002... 0.7625
+Average accuracy for user 003... 0.8375
+Average accuracy for user 004... 0.45
+Average accuracy for user 005... 0.7375
+Average accuracy for user 006... 0.78125
+Average accuracy for user 007... 0.80625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7312500000000001
+
+DYNAMIC_ACC_ONLY_CUT_OFF_3_ORDER_4
+Average accuracy for user 001... 0.7625
+Average accuracy for user 002... 0.75
+Average accuracy for user 003... 0.85
+Average accuracy for user 004... 0.48125
+Average accuracy for user 005... 0.73125
+Average accuracy for user 006... 0.81875
+Average accuracy for user 007... 0.83125
+---------------------------------------
+Average Accuracy on ALL users -> 0.7464285714285713
+
+DYNAMIC_ACC_ONLY_CUT_OFF_2_ORDER_4
+Average accuracy for user 001... 0.76875
+Average accuracy for user 002... 0.74375
+Average accuracy for user 003... 0.86875
+Average accuracy for user 004... 0.475
+Average accuracy for user 005... 0.73125
+Average accuracy for user 006... 0.8
+Average accuracy for user 007... 0.75625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7348214285714285
+
+DYNAMIC_ACC_ONLY_CUT_OFF_1_ORDER_4
+Average accuracy for user 001... 0.675
+Average accuracy for user 002... 0.6125
+Average accuracy for user 003... 0.85625
+Average accuracy for user 004... 0.35625
+Average accuracy for user 005... 0.65
+Average accuracy for user 006... 0.675
+Average accuracy for user 007... 0.775
+---------------------------------------
+Average Accuracy on ALL users -> 0.6571428571428573
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.5_ORDER_4
+Average accuracy for user 001... 0.63125
+Average accuracy for user 002... 0.59375
+Average accuracy for user 003... 0.75
+Average accuracy for user 004... 0.3125
+Average accuracy for user 005... 0.6125
+Average accuracy for user 006... 0.5625
+Average accuracy for user 007... 0.68125
+---------------------------------------
+Average Accuracy on ALL users -> 0.5919642857142858
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.25_ORDER_4
+Average accuracy for user 001... 0.425
+Average accuracy for user 002... 0.51875
+Average accuracy for user 003... 0.675
+Average accuracy for user 004... 0.28125
+Average accuracy for user 005... 0.56875
+Average accuracy for user 006... 0.54375
+Average accuracy for user 007... 0.59375
+---------------------------------------
+Average Accuracy on ALL users -> 0.5151785714285715
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.1_ORDER_4
+Average accuracy for user 001... 0.3875
+Average accuracy for user 002... 0.45
+Average accuracy for user 003... 0.61875
+Average accuracy for user 004... 0.31875
+Average accuracy for user 005... 0.50625
+Average accuracy for user 006... 0.48125
+Average accuracy for user 007... 0.525
+---------------------------------------
+Average Accuracy on ALL users -> 0.46964285714285714
+
+DYNAMIC_ACC_ONLY_CUT_OFF_40_ORDER_2
+Average accuracy for user 001... 0.6875
+Average accuracy for user 002... 0.73125
+Average accuracy for user 003... 0.875
+Average accuracy for user 004... 0.53125
+Average accuracy for user 005... 0.71875
+Average accuracy for user 006... 0.7875
+Average accuracy for user 007... 0.84375
+---------------------------------------
+Average Accuracy on ALL users -> 0.7392857142857142
+
+DYNAMIC_ACC_ONLY_CUT_OFF_20_ORDER_2
+Average accuracy for user 001... 0.7375
+Average accuracy for user 002... 0.80625
+Average accuracy for user 003... 0.85
+Average accuracy for user 004... 0.51875
+Average accuracy for user 005... 0.7375
+Average accuracy for user 006... 0.7625
+Average accuracy for user 007... 0.81875
+---------------------------------------
+Average Accuracy on ALL users -> 0.7473214285714286
+
+DYNAMIC_ACC_ONLY_CUT_OFF_10_ORDER_2
+Average accuracy for user 001... 0.70625
+Average accuracy for user 002... 0.74375
+Average accuracy for user 003... 0.8375
+Average accuracy for user 004... 0.475
+Average accuracy for user 005... 0.73125
+Average accuracy for user 006... 0.76875
+Average accuracy for user 007... 0.825
+---------------------------------------
+Average Accuracy on ALL users -> 0.7267857142857144
+
+DYNAMIC_ACC_ONLY_CUT_OFF_5_ORDER_2
+Average accuracy for user 001... 0.74375
+Average accuracy for user 002... 0.725
+Average accuracy for user 003... 0.84375
+Average accuracy for user 004... 0.50625
+Average accuracy for user 005... 0.71875
+Average accuracy for user 006... 0.78125
+Average accuracy for user 007... 0.8125
+---------------------------------------
+Average Accuracy on ALL users -> 0.7330357142857142
+
+DYNAMIC_ACC_ONLY_CUT_OFF_3_ORDER_2
+Average accuracy for user 001... 0.6875
+Average accuracy for user 002... 0.775
+Average accuracy for user 003... 0.84375
+Average accuracy for user 004... 0.4875
+Average accuracy for user 005... 0.76875
+Average accuracy for user 006... 0.825
+Average accuracy for user 007... 0.80625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7419642857142857
+
+DYNAMIC_ACC_ONLY_CUT_OFF_2_ORDER_2
+Average accuracy for user 001... 0.68125
+Average accuracy for user 002... 0.7625
+Average accuracy for user 003... 0.86875
+Average accuracy for user 004... 0.4
+Average accuracy for user 005... 0.75
+Average accuracy for user 006... 0.8
+Average accuracy for user 007... 0.725
+---------------------------------------
+Average Accuracy on ALL users -> 0.7125
+
+DYNAMIC_ACC_ONLY_CUT_OFF_1_ORDER_2
+Average accuracy for user 001... 0.7125
+Average accuracy for user 002... 0.71875
+Average accuracy for user 003... 0.8375
+Average accuracy for user 004... 0.33125
+Average accuracy for user 005... 0.725
+Average accuracy for user 006... 0.75
+Average accuracy for user 007... 0.81875
+---------------------------------------
+Average Accuracy on ALL users -> 0.6991071428571427
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.5_ORDER_2
+Average accuracy for user 001... 0.66875
+Average accuracy for user 002... 0.64375
+Average accuracy for user 003... 0.8375
+Average accuracy for user 004... 0.29375
+Average accuracy for user 005... 0.675
+Average accuracy for user 006... 0.675
+Average accuracy for user 007... 0.7625
+---------------------------------------
+Average Accuracy on ALL users -> 0.6508928571428572
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.25_ORDER_2
+Average accuracy for user 001... 0.5875
+Average accuracy for user 002... 0.60625
+Average accuracy for user 003... 0.81875
+Average accuracy for user 004... 0.325
+Average accuracy for user 005... 0.6875
+Average accuracy for user 006... 0.5875
+Average accuracy for user 007... 0.6875
+---------------------------------------
+Average Accuracy on ALL users -> 0.6142857142857144
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.1_ORDER_2
+Average accuracy for user 001... 0.5125
+Average accuracy for user 002... 0.525
+Average accuracy for user 003... 0.73125
+Average accuracy for user 004... 0.3
+Average accuracy for user 005... 0.61875
+Average accuracy for user 006... 0.5625
+Average accuracy for user 007... 0.68125
+---------------------------------------
+Average Accuracy on ALL users -> 0.5616071428571429
+
+DYNAMIC_ACC_ONLY_CUT_OFF_40_ORDER_8
+Average accuracy for user 001... 0.7625
+Average accuracy for user 002... 0.7375
+Average accuracy for user 003... 0.88125
+Average accuracy for user 004... 0.45625
+Average accuracy for user 005... 0.73125
+Average accuracy for user 006... 0.79375
+Average accuracy for user 007... 0.8625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7464285714285713
+
+DYNAMIC_ACC_ONLY_CUT_OFF_20_ORDER_8
+Average accuracy for user 001... 0.75625
+Average accuracy for user 002... 0.75625
+Average accuracy for user 003... 0.85625
+Average accuracy for user 004... 0.48125
+Average accuracy for user 005... 0.7625
+Average accuracy for user 006... 0.80625
+Average accuracy for user 007... 0.80625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7464285714285716
+
+DYNAMIC_ACC_ONLY_CUT_OFF_10_ORDER_8
+Average accuracy for user 001... 0.70625
+Average accuracy for user 002... 0.79375
+Average accuracy for user 003... 0.8625
+Average accuracy for user 004... 0.475
+Average accuracy for user 005... 0.7125
+Average accuracy for user 006... 0.80625
+Average accuracy for user 007... 0.79375
+---------------------------------------
+Average Accuracy on ALL users -> 0.7357142857142858
+
+DYNAMIC_ACC_ONLY_CUT_OFF_5_ORDER_8
+Average accuracy for user 001... 0.7
+Average accuracy for user 002... 0.76875
+Average accuracy for user 003... 0.83125
+Average accuracy for user 004... 0.5125
+Average accuracy for user 005... 0.69375
+Average accuracy for user 006... 0.78125
+Average accuracy for user 007... 0.85
+---------------------------------------
+Average Accuracy on ALL users -> 0.7339285714285714
+
+DYNAMIC_ACC_ONLY_CUT_OFF_3_ORDER_8
+Average accuracy for user 001... 0.69375
+Average accuracy for user 002... 0.725
+Average accuracy for user 003... 0.85625
+Average accuracy for user 004... 0.51875
+Average accuracy for user 005... 0.69375
+Average accuracy for user 006... 0.80625
+Average accuracy for user 007... 0.83125
+---------------------------------------
+Average Accuracy on ALL users -> 0.7321428571428571
+
+DYNAMIC_ACC_ONLY_CUT_OFF_2_ORDER_8
+Average accuracy for user 001... 0.725
+Average accuracy for user 002... 0.66875
+Average accuracy for user 003... 0.86875
+Average accuracy for user 004... 0.43125
+Average accuracy for user 005... 0.6875
+Average accuracy for user 006... 0.79375
+Average accuracy for user 007... 0.75625
+---------------------------------------
+Average Accuracy on ALL users -> 0.7044642857142857
+
+DYNAMIC_ACC_ONLY_CUT_OFF_1_ORDER_8
+Average accuracy for user 001... 0.6625
+Average accuracy for user 002... 0.6375
+Average accuracy for user 003... 0.8
+Average accuracy for user 004... 0.36875
+Average accuracy for user 005... 0.61875
+Average accuracy for user 006... 0.59375
+Average accuracy for user 007... 0.675
+---------------------------------------
+Average Accuracy on ALL users -> 0.6223214285714285
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.5_ORDER_8
+Average accuracy for user 001... 0.43125
+Average accuracy for user 002... 0.49375
+Average accuracy for user 003... 0.63125
+Average accuracy for user 004... 0.29375
+Average accuracy for user 005... 0.55625
+Average accuracy for user 006... 0.54375
+Average accuracy for user 007... 0.58125
+---------------------------------------
+Average Accuracy on ALL users -> 0.5044642857142857
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.25_ORDER_8
+Average accuracy for user 001... 0.36875
+Average accuracy for user 002... 0.3875
+Average accuracy for user 003... 0.45625
+Average accuracy for user 004... 0.26875
+Average accuracy for user 005... 0.375
+Average accuracy for user 006... 0.33125
+Average accuracy for user 007... 0.35
+---------------------------------------
+Average Accuracy on ALL users -> 0.3625
+
+DYNAMIC_ACC_ONLY_CUT_OFF_0.1_ORDER_8
+Average accuracy for user 001... 0.3125
+Average accuracy for user 002... 0.45625
+Average accuracy for user 003... 0.4375
+Average accuracy for user 004... 0.275
+Average accuracy for user 005... 0.39375
+Average accuracy for user 006... 0.33125
+Average accuracy for user 007... 0.3125
+---------------------------------------
+Average Accuracy on ALL users -> 0.3598214285714286
+
