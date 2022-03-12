@@ -1,12 +1,17 @@
+import json
+
 from utils import GDriveDownloader
+# from utils import SpatialProjection
+# from utils import preposses_data
 
 
 # ... config
-data_dir = "../data/asl/raw/"
-dataset_id = "1p0CSRb9gax0sKqdyzOYVt-BXvZ4GtrBv"
+config_file = open("config/config.json")
+config = json.load(config_file)
+config_file.close()
 
 downloader = GDriveDownloader()
 downloader.download(
-    fid=dataset_id,
-    destination=data_dir
+    fid=config["dataset_id"],
+    destination=config["data_dir"]
 )

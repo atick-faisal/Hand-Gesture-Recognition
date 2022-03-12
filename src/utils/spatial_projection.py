@@ -6,7 +6,7 @@ from rich.status import Status
 from .dir_utils import clean_dir
 
 status = Status("", spinner="dots9")
-status.start()
+# status.start()
 
 
 class SpatialProjection:
