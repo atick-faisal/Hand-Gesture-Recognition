@@ -1,12 +1,15 @@
 {
     "dt": 0.01,
     "fs": 100,
+    "segment_len": 150,
+    "line_width": 100,
     "imu_cutoff": 7,
     "batch_size": 32,
     "learning_rate": 3e-4,
     "n_epochs": 300,
 
     "data_dir": "../data/asl/raw/",
+    "image_dir": "../data/asl/images/",
     "dataset_id": "1p0CSRb9gax0sKqdyzOYVt-BXvZ4GtrBv",
 
     "users": [

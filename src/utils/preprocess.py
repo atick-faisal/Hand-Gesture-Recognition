@@ -8,9 +8,11 @@ from .filters import LowPassFilter
 
 def preposses_data(
     data: pd.DataFrame,
+    fs: int = 100,
+    imu_cutoff: int = 3,
     window_len: int = 150
 ) -> np.ndarray:
-    data.fillna(inplace=True)
+    data.fillna(method="bfill", inplace=True)
 
     # ... smoothing
     data['flex_1'] = data['flex_1'].rolling(3).median()
@@ -29,9 +31,23 @@ def preposses_data(
     accy = data['ACCy'].to_numpy()
     accz = data['ACCz'].to_numpy()
 
-    accx = LowPassFilter.apply(accx).reshape(-1, window_len)
-    accy = LowPassFilter.apply(accy).reshape(-1, window_len)
-    accz = LowPassFilter.apply(accz).reshape(-1, window_len)
+    accx = LowPassFilter.apply(
+        data=accx,
+        cutoff=imu_cutoff,
+        fs=fs
+    ).reshape(-1, window_len)
+
+    accy = LowPassFilter.apply(
+        data=accy,
+        cutoff=imu_cutoff,
+        fs=fs
+    ).reshape(-1, window_len)
+
+    accz = LowPassFilter.apply(
+        data=accz,
+        cutoff=imu_cutoff,
+        fs=fs
+    ).reshape(-1, window_len)
 
     channels = np.stack([
         flx1, flx2, flx3, flx4, flx5,

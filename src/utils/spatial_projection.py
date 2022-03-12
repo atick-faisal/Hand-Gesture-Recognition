@@ -2,11 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-from rich.status import Status
 from .dir_utils import clean_dir
-
-status = Status("", spinner="dots9")
-# status.start()
 
 
 class SpatialProjection:
@@ -39,6 +35,7 @@ class SpatialProjection:
         self,
         acceleration: np.ndarray
     ) -> np.ndarray:
+        acceleration = acceleration.ravel()
         velocity = np.zeros_like(acceleration)
         displacement = np.zeros_like(acceleration)
 
@@ -52,7 +49,8 @@ class SpatialProjection:
     def generate_images(
         self,
         acceleration: tuple,
-        image_dir: os.PathLike
+        image_dir: os.PathLike,
+        image_prefix: str
     ):
         x = self.get_displacement_vector(
             acceleration=acceleration[0]
@@ -68,14 +66,14 @@ class SpatialProjection:
 
         for plane in SpatialProjection.projection_planes:
             for i in range(x.shape[0]):
-                image_name = "{:0>3d}".format(i) + ".jpg"
-                path = os.path.join(image_dir, image_name)
+                image_name = f"{image_prefix}_{i:0>3d}_{plane}.jpg"
+                image_path = os.path.join(image_dir, image_name)
 
                 if plane == "xy":
-                    self.write_image(x[i, :], y[i, :], path)
+                    self.write_image(x[i, :], y[i, :], image_path)
                 elif plane == "yz":
-                    self.write_image(y[i, :], z[i, :], path)
+                    self.write_image(y[i, :], z[i, :], image_path)
                 elif plane == "zx":
-                    self.write_image(z[i, :], x[i, :], path)
+                    self.write_image(z[i, :], x[i, :], image_path)
                 else:
                     pass
