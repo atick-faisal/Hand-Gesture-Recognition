@@ -4,8 +4,10 @@ import tarfile
 import requests
 
 from rich.status import Status
+from .dir_utils import clean_dir
 
 status = Status("processing ... ", spinner="dots9")
+status.start()
 
 
 class GDriveDownloader:
@@ -61,16 +63,8 @@ class GDriveDownloader:
         fid: str,
         destination: os.PathLike
     ):
-        status.start()
         status.update(" cleaning already existing files ... ")
-
-        try:
-            shutil.rmtree(destination)
-        except:
-            pass
-
-        status.update(" creating data directory ... ")
-        os.mkdir(destination)
+        clean_dir(destination)
 
         status.update(" downloading data ... ")
         filename = os.path.join(destination, 'dataset.tar.xz')
