@@ -1,3 +1,5 @@
+import tensorflow as tf
+import numpy as np
 import os
 import json
 
@@ -9,6 +11,8 @@ from utils import GDriveDownloader
 from utils import SpatialProjection
 from utils import preposses_data
 from utils import clean_dir
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 
 # ... config
@@ -39,6 +43,7 @@ with Progress() as progress:
 
     subjects = []
     labels = []
+    images = []
 
     for u_idx, user in enumerate(config["users"]):
         for g_idx, gesture in enumerate(config["dynamic_gestures"]):
@@ -54,7 +59,7 @@ with Progress() as progress:
 
             image_prefix = f"{user}_{gesture}"
 
-            projection.generate_images(
+            img_files = projection.generate_images(
                 acceleration=(accx, accy, accz),
                 image_dir=config["image_dir"],
                 image_prefix=image_prefix
@@ -63,6 +68,7 @@ with Progress() as progress:
             n = channels.shape[0]
             subjects.append([user] * n)
             labels.append([gesture] * n)
+            images.append(img_files)
 
             progress.update(
                 task_id=task,
@@ -70,5 +76,12 @@ with Progress() as progress:
                 f"Gesture [{g_idx + 1:>2}/{16}] ",
                 advance=1
             )
+
+
+# ds = tf.data.Dataset.from_tensor_slices(
+#     tuple(np.split(channels, 8, axis=2))
+# )
+
+# ds.element_spec
 
 # print(channels.shape)

@@ -52,6 +52,7 @@ class SpatialProjection:
         image_dir: os.PathLike,
         image_prefix: str
     ):
+        image_names = []
         x = self.get_displacement_vector(
             acceleration=acceleration[0]
         ).reshape(-1, self.n_points)
@@ -77,3 +78,7 @@ class SpatialProjection:
                     self.write_image(z[i, :], x[i, :], image_path)
                 else:
                     pass
+
+                image_names.append(image_name)
+
+        return image_names
