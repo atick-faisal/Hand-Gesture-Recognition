@@ -1,8 +1,71 @@
+import os
 import numpy as np
-
+import pandas as pd
 import tensorflow as tf
 
+from rich.progress import Progress
+
+from .preprocess import preposses_data
+from .spatial_projection import SpatialProjection
+
 AUTOTUNE = tf.data.AUTOTUNE
+
+
+class DataLoader:
+    def __init__(
+            self,
+            data_dir: str,
+            images_dir: str,
+            channels_dir: str,
+            users: list,
+            gestures: list,
+            projection_generator: SpatialProjection
+    ):
+        self.data_dir = data_dir
+        self.images_dir = images_dir
+        self.channels_dir = channels_dir
+        self.users = users
+        self.gestures = gestures
+        self.projection_generator = projection_generator
+
+    def extract_channels(self):
+        if not os.path.exists(self.channels_dir):
+            os.makedirs(self.channels_dir)
+
+        data_channels = np.array([], dtype="float64")
+        labels = np.array([], dtype="uint8")
+
+        with Progress() as progress:
+            task = progress.add_task(
+                description="processing data ... ",
+                total=(len(self.users) * len(self.gestures))
+            )
+
+            for u_idx, user in enumerate(self.users):
+                for g_idx, gesture in enumerate(self.gestures):
+                    path = os.path.join(
+                        self.data_dir, user, gesture + ".csv"
+                    )
+                    data = pd.read_csv(path)
+                    channels = preposses_data(data)
+                    if data_channels.size == 0:
+                        data_channels = channels
+                    else:
+                        data_channels = np.vstack(
+                            (data_channels, channels)
+                        )
+                    n = channels.shape[0]
+                    labels = np.append(labels, [g_idx] * n)
+
+                    progress.update(
+                        task_id=task,
+                        description=f"User [{u_idx + 1:>2}/{25}] "
+                        f"Gesture [{g_idx + 1:>2}/{16}] ",
+                        advance=1
+                    )
+
+            print(data_channels.shape)
+            print(labels.shape)
 
 
 def load(file_path: str) -> tf.Tensor:

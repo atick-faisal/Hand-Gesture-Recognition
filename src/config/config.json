@@ -9,7 +9,8 @@
     "n_epochs": 300,
 
     "data_dir": "../data/asl/raw/",
-    "image_dir": "../data/asl/images/",
+    "images_dir": "../data/asl/images/",
+    "channels_dir": "../data/asl/channels/",
     "dataset_id": "1p0CSRb9gax0sKqdyzOYVt-BXvZ4GtrBv",
 
     "users": [
