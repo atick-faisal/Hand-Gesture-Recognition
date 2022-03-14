@@ -47,11 +47,16 @@ dataloader = DataLoader(
     images_dir=config["images_dir"],
     channels_dir=config["channels_dir"],
     users=config["users"],
-    gestures=gestures,
-    projection_generator=projection
+    gestures=gestures
 )
 
-dataloader.extract_channels()
+dataloader.extract_channels(
+    fs=config["fs"],
+    imu_cutoff=config["imu_cutoff"],
+    window_len=config["segment_len"]
+)
+
+dataloader.generate_projection_images(projection)
 
 # with Progress() as progress:
 #     task = progress.add_task(

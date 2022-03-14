@@ -18,17 +18,20 @@ class DataLoader:
             images_dir: str,
             channels_dir: str,
             users: list,
-            gestures: list,
-            projection_generator: SpatialProjection
+            gestures: list
     ):
         self.data_dir = data_dir
         self.images_dir = images_dir
         self.channels_dir = channels_dir
         self.users = users
         self.gestures = gestures
-        self.projection_generator = projection_generator
 
-    def extract_channels(self):
+    def extract_channels(
+        self,
+        fs: int,
+        imu_cutoff: int,
+        window_len: int
+    ):
         if not os.path.exists(self.channels_dir):
             os.makedirs(self.channels_dir)
 
@@ -47,7 +50,12 @@ class DataLoader:
                         self.data_dir, user, gesture + ".csv"
                     )
                     data = pd.read_csv(path)
-                    channels = preposses_data(data)
+                    channels = preposses_data(
+                        data=data,
+                        fs=fs,
+                        imu_cutoff=imu_cutoff,
+                        window_len=window_len
+                    )
                     if data_channels.size == 0:
                         data_channels = channels
                     else:
@@ -64,8 +72,60 @@ class DataLoader:
                         advance=1
                     )
 
-            print(data_channels.shape)
-            print(labels.shape)
+            np.save(os.path.join(
+                self.channels_dir, "channels.npy"
+            ), channels)
+
+            np.save(os.path.join(
+                self.channels_dir, "labels.npy"
+            ), labels)
+
+    def generate_projection_images(
+        self,
+        projection: SpatialProjection
+    ):
+        if not os.path.exists(self.images_dir):
+            os.makedirs(self.images_dir)
+
+        data_channels = np.load(
+            os.path.join(
+                self.channels_dir, "channels.npy"
+            )
+        )
+
+        accx = data_channels[:, :, 5]
+        accy = data_channels[:, :, 6]
+        accz = data_channels[:, :, 7]
+
+        images = np.array([], dtype="<U16")
+
+        with Progress() as progress:
+            task = progress.add_task(
+                description="processing data ... ",
+                total=(len(self.users) * len(self.gestures))
+            )
+
+            for u_idx, user in enumerate(self.users):
+                for g_idx, _ in enumerate(self.gestures):
+                    image_prefix = f"U{user}_{g_idx:0>3}"
+                    img_files = projection.generate_images(
+                        acceleration=(accx, accy, accz),
+                        image_dir=self.images_dir,
+                        image_prefix=image_prefix
+                    )
+
+                    images = np.append(images, img_files)
+
+                    progress.update(
+                        task_id=task,
+                        description=f"User [{u_idx + 1:>2}/{25}] "
+                        f"Gesture [{g_idx + 1:>2}/{16}] ",
+                        advance=1
+                    )
+
+        np.save(os.path.join(
+            self.images_dir, "image_names.npy"
+        ), images)
 
 
 def load(file_path: str) -> tf.Tensor:
