@@ -49,7 +49,7 @@ class SpatialProjection:
     def generate_images(
         self,
         acceleration: tuple,
-        image_dir: os.PathLike,
+        image_dir: str,
         image_prefix: str
     ):
         image_names = []
@@ -79,6 +79,8 @@ class SpatialProjection:
                 else:
                     pass
 
-                image_names.append(image_name)
+                image_names.append(
+                    os.path.join(image_dir, image_name)
+                )
 
         return image_names

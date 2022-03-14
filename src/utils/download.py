@@ -23,7 +23,7 @@ class GDriveDownloader:
     def save_response_content(
         self,
         response: requests.Response,
-        destination: os.PathLike
+        destination: str
     ):
         with open(destination, "wb") as f:
             content = response.iter_content(self.chunk_size)
@@ -34,7 +34,7 @@ class GDriveDownloader:
     def download_file(
         self,
         fid: str,
-        destination: os.PathLike
+        destination: str
     ):
         session = requests.Session()
 
@@ -58,7 +58,7 @@ class GDriveDownloader:
     def download(
         self,
         fid: str,
-        destination: os.PathLike
+        destination: str
     ):
         self.status.start()
         self.status.update(" cleaning already existing files ... ")
