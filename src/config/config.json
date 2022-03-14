@@ -7,6 +7,7 @@
     "batch_size": 32,
     "learning_rate": 3e-4,
     "n_epochs": 300,
+    "img_size": 32,
 
     "data_dir": "../data/asl/raw/",
     "images_dir": "../data/asl/images/",

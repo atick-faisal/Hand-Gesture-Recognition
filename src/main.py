@@ -11,7 +11,7 @@ from utils import GDriveDownloader
 from utils import SpatialProjection
 from utils import DataLoader
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 EXPERIMENT = "DYNAMIC"  # STATIC or DYNAMIC
 
@@ -56,7 +56,13 @@ dataloader.extract_channels(
     window_len=config["segment_len"]
 )
 
-dataloader.generate_projection_images(projection)
+# dataloader.generate_projection_images(projection)
+
+train_ds, test_ds = dataloader.load_ds(
+    test_subjects=["001"],
+    image_shape=(config["img_size"], config["img_size"]),
+    batch_size=config["batch_size"]
+)
 
 # with Progress() as progress:
 #     task = progress.add_task(
@@ -119,4 +125,4 @@ dataloader.generate_projection_images(projection)
 #     batch_size=2
 # )
 
-# print(train_ds.element_spec)
+print(train_ds.element_spec)

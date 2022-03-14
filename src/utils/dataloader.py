@@ -37,6 +37,7 @@ class DataLoader:
 
         data_channels = np.array([], dtype="float64")
         labels = np.array([], dtype="uint8")
+        subjects = np.array([], dtype="<U3")
 
         with Progress() as progress:
             task = progress.add_task(
@@ -64,6 +65,7 @@ class DataLoader:
                         )
                     n = channels.shape[0]
                     labels = np.append(labels, [g_idx] * n)
+                    subjects = np.append(subjects, [user] * n)
 
                     progress.update(
                         task_id=task,
@@ -74,11 +76,15 @@ class DataLoader:
 
             np.save(os.path.join(
                 self.channels_dir, "channels.npy"
-            ), channels)
+            ), data_channels)
 
             np.save(os.path.join(
                 self.channels_dir, "labels.npy"
             ), labels)
+
+            np.save(os.path.join(
+                self.channels_dir, "subjects.npy"
+            ), subjects)
 
     def generate_projection_images(
         self,
@@ -127,76 +133,118 @@ class DataLoader:
             self.images_dir, "image_names.npy"
         ), images)
 
+    @staticmethod
+    def load(
+        file_path: str,
+        img_shape: tuple
+    ) -> tf.Tensor:
+        img = tf.io.read_file(file_path)
+        img = tf.image.decode_jpeg(img, channels=3)
+        # img = tf.image.convert_image_dtype(img, tf.float32)
+        img = tf.image.resize(img, size=img_shape)
 
-def load(file_path: str) -> tf.Tensor:
-    img = tf.io.read_file(file_path)
-    img = tf.image.decode_png(img, channels=3)
-    img = tf.image.convert_image_dtype(img, tf.float32)
-    img = tf.image.resize(img, size=(32, 32))
-    return img
+        return img
 
+    @staticmethod
+    def configure_for_performance(
+        ds: tf.data.Dataset,
+        batch_size: int
+    ) -> tf.data.Dataset:
+        ds = ds.cache()
+        ds = ds.shuffle(buffer_size=1000)
+        ds = ds.batch(batch_size)
+        ds = ds.prefetch(buffer_size=AUTOTUNE)
 
-def configure_for_performance(
-    ds: tf.data.Dataset,
-    batch_size: int
-) -> tf.data.Dataset:
-    ds = ds.cache()
-    ds = ds.shuffle(buffer_size=1000)
-    ds = ds.batch(batch_size)
-    ds = ds.prefetch(buffer_size=AUTOTUNE)
-    return ds
+        return ds
 
+    def load_ds(
+        self,
+        test_subjects: list,
+        image_shape: tuple,
+        batch_size: int
+    ):
+        data_channels = np.load(
+            os.path.join(
+                self.channels_dir, "channels.npy"
+            )
+        )
 
-def load_ds(
-    test_subjects: list,
-    data_channels: np.ndarray = None,
-    subjects: list = None,
-    labels: list = None,
-    images: list = None,
-    batch_size: int = 2
-):
-    mask = np.array([], dtype="bool")
-    for subject in subjects:
-        mask = np.append(mask, (subject in test_subjects))
+        labels = np.load(
+            os.path.join(
+                self.channels_dir, "labels.npy"
+            )
+        )
 
-    train_channels = data_channels[~mask, :, :]
-    test_channels = data_channels[mask, :, :]
+        subjects = np.load(
+            os.path.join(
+                self.channels_dir, "subjects.npy"
+            )
+        )
 
-    images_xy = images[0::3]
-    images_yz = images[1::3]
-    images_zx = images[2::3]
+        images = np.load(
+            os.path.join(
+                self.images_dir, "image_names.npy"
+            )
+        )
 
-    train_images_xy = images_xy[~mask]
-    train_images_yz = images_yz[~mask]
-    train_images_zx = images_zx[~mask]
+        mask = np.array([], dtype="bool")
+        for subject in subjects:
+            mask = np.append(mask, (subject in test_subjects))
 
-    test_images_xy = images_xy[mask]
-    test_images_yz = images_yz[mask]
-    test_images_zx = images_zx[mask]
+        train_channels = data_channels[~mask, :, :]
+        test_channels = data_channels[mask, :, :]
 
-    train_data = tf.data.Dataset.from_tensor_slices(
-        (train_images_xy, train_images_yz, train_images_zx,
-         *np.split(train_channels, train_channels.shape[-1], axis=-1))
-    ).map(
-        lambda xy, yz, zx, *channels:
-        (load(xy), load(yz), load(zx), channels)
-    )
+        images_xy = images[0::3]
+        images_yz = images[1::3]
+        images_zx = images[2::3]
 
-    test_data = tf.data.Dataset.from_tensor_slices(
-        (test_images_xy, test_images_yz, test_images_zx,
-         *np.split(test_channels, test_channels.shape[-1], axis=-1))
-    ).map(
-        lambda xy, yz, zx, *channels:
-        (load(xy), load(yz), load(zx), channels)
-    )
+        train_images_xy = images_xy[~mask]
+        train_images_yz = images_yz[~mask]
+        train_images_zx = images_zx[~mask]
 
-    train_labels = tf.data.Dataset.from_tensor_slices(labels[~mask])
-    test_labels = tf.data.Dataset.from_tensor_slices(labels[mask])
+        test_images_xy = images_xy[mask]
+        test_images_yz = images_yz[mask]
+        test_images_zx = images_zx[mask]
 
-    train_ds = tf.data.Dataset.zip((train_data, train_labels))
-    test_ds = tf.data.Dataset.zip((test_data, test_labels))
+        train_data = tf.data.Dataset.from_tensor_slices(
+            (train_images_xy, train_images_yz, train_images_zx,
+             *np.split(train_channels, train_channels.shape[-1], axis=-1))
+        ).map(
+            lambda img_xy, img_yz, img_zx, *channels:
+            (
+                DataLoader.load(img_xy, image_shape),
+                DataLoader.load(img_yz, image_shape),
+                DataLoader.load(img_zx, image_shape),
+                channels
+            )
+        )
 
-    train_ds = configure_for_performance(train_ds, batch_size)
-    test_ds = configure_for_performance(test_ds, batch_size)
+        test_data = tf.data.Dataset.from_tensor_slices(
+            (test_images_xy, test_images_yz, test_images_zx,
+             *np.split(test_channels, test_channels.shape[-1], axis=-1))
+        ).map(
+            lambda img_xy, img_yz, img_zx, *channels:
+            (
+                DataLoader.load(img_xy, image_shape),
+                DataLoader.load(img_yz, image_shape),
+                DataLoader.load(img_zx, image_shape),
+                channels
+            )
+        )
 
-    return train_ds, test_ds
+        train_labels = tf.data.Dataset.from_tensor_slices(labels[~mask])
+        test_labels = tf.data.Dataset.from_tensor_slices(labels[mask])
+
+        train_ds = tf.data.Dataset.zip((train_data, train_labels))
+        test_ds = tf.data.Dataset.zip((test_data, test_labels))
+
+        train_ds = DataLoader.configure_for_performance(
+            train_ds,
+            batch_size
+        )
+        test_ds = DataLoader.configure_for_performance(
+            test_ds,
+            batch_size
+        )
+
+        return train_ds, test_ds
