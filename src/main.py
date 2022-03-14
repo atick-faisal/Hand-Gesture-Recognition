@@ -43,7 +43,7 @@ with Progress() as progress:
     # clean_dir(config["image_dir"])
 
     subjects = []
-    labels = []
+    labels = np.array([], dtype="<U16")
     images = np.array([], dtype="<U32")
     data_channels = np.array([], dtype="float32")
 
@@ -73,7 +73,7 @@ with Progress() as progress:
 
             n = channels.shape[0]
             subjects += ([user] * n)
-            labels += ([gesture] * n)
+            labels = np.append(labels, [gesture] * n)
             images = np.append(images, img_files)
 
             progress.update(
@@ -86,9 +86,13 @@ with Progress() as progress:
 
 print(images.shape)
 
-load_ds(
+train_ds, test_ds = load_ds(
     test_subjects=["001"],
     data_channels=data_channels,
     subjects=subjects,
-    images=images
+    images=images,
+    labels=labels,
+    batch_size=2
 )
+
+print(train_ds.element_spec)
