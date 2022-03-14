@@ -32,7 +32,6 @@ else:
     raise ValueError("Wrong experiment!")
 
 projection = SpatialProjection(
-    n_points=config["segment_len"],
     width=config["line_width"],
     dt=config["dt"]
 )
@@ -58,7 +57,7 @@ dataloader.extract_channels(
     window_len=config["segment_len"]
 )
 
-dataloader.generate_projection_images(projection)
+# dataloader.generate_projection_images(projection)
 
 train_ds, test_ds = dataloader.load_ds(
     test_subjects=["001"],

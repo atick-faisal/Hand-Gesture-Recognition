@@ -7,7 +7,6 @@ class ConvBlock1D(models.Model):
         segment_len: int
     ):
         super().__init__()
-        self.input_ = layers.Input(shape=(segment_len, 1))
         self.cnn1 = layers.Conv1D(
             filters=8,
             kernel_size=3,
@@ -27,13 +26,12 @@ class ConvBlock1D(models.Model):
             activation="relu"
         )
 
-    def call(self, x):
-        x = self.input_(x)
-        x = self.cnn1(x)
+    def call(self, inputs):
+        x = self.cnn1(inputs)
         x = self.pool(x)
         x = self.cnn2(x)
         x = self.pool(x)
         x = self.flatten(x)
-        x = self.mlp(x)
+        output = self.mlp(x)
 
-        return x
+        return models.Model(inputs, output)

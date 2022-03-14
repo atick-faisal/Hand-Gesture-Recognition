@@ -40,6 +40,7 @@ class ProjectionNet(models.Model):
         )
 
     def call(self, inputs):
+        print(len(inputs[0]))
         images = inputs[:self.n_projections]
         channels = inputs[self.n_projections:]
 

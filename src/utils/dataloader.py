@@ -70,7 +70,7 @@ class DataLoader:
                     progress.update(
                         task_id=task,
                         description=f"User [{u_idx + 1:>2}/{25}] "
-                        f"Gesture [{g_idx + 1:>2}/{16}] ",
+                        f"Gesture [{g_idx + 1:>2}/{16}]   ",
                         advance=1
                     )
 
@@ -104,30 +104,35 @@ class DataLoader:
         accz = data_channels[:, :, 7]
 
         images = np.array([], dtype="<U16")
+        total_segments = accx.shape[0]
 
         with Progress() as progress:
             task = progress.add_task(
                 description="processing data ... ",
-                total=(len(self.users) * len(self.gestures))
+                total=total_segments
             )
 
-            for u_idx, user in enumerate(self.users):
-                for g_idx, _ in enumerate(self.gestures):
-                    image_prefix = f"U{user}_{g_idx:0>3}"
-                    img_files = projection.generate_images(
-                        acceleration=(accx, accy, accz),
-                        image_dir=self.images_dir,
-                        image_prefix=image_prefix
-                    )
+            for i in range(accx.shape[0]):
+                image_prefix = f"{i:0>6}"
 
-                    images = np.append(images, img_files)
+                img_files = projection.generate_images(
+                    acceleration=(
+                        accx[i, :],
+                        accy[i, :],
+                        accz[i, :]
+                    ),
+                    image_dir=self.images_dir,
+                    image_prefix=image_prefix
+                )
 
-                    progress.update(
-                        task_id=task,
-                        description=f"User [{u_idx + 1:>2}/{25}] "
-                        f"Gesture [{g_idx + 1:>2}/{16}] ",
-                        advance=1
-                    )
+                images = np.append(images, img_files)
+
+                progress.update(
+                    task_id=task,
+                    description=f"Processing Images "
+                    f"[{i:>5}/{accx.shape[0]}] ",
+                    advance=1
+                )
 
         np.save(os.path.join(
             self.images_dir, "image_names.npy"

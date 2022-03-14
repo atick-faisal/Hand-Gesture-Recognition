@@ -11,11 +11,9 @@ class SpatialProjection:
 
     def __init__(
             self,
-            n_points: int = 150,
             width: int = 100,
             dt: float = 0.01
     ):
-        self.n_points = n_points
         self.width = width
         self.dt = dt
 
@@ -53,34 +51,25 @@ class SpatialProjection:
         image_prefix: str
     ):
         image_names = []
-        x = self.get_displacement_vector(
-            acceleration=acceleration[0]
-        ).reshape(-1, self.n_points)
+        x = self.get_displacement_vector(acceleration=acceleration[0])
+        y = self.get_displacement_vector(acceleration=acceleration[1])
+        z = self.get_displacement_vector(acceleration=acceleration[2])
 
-        y = self.get_displacement_vector(
-            acceleration=acceleration[1]
-        ).reshape(-1, self.n_points)
+        for plane in SpatialProjection.projection_planes:
+            image_name = f"{image_prefix}_{plane}.jpg"
+            image_path = os.path.join(image_dir, image_name)
 
-        z = self.get_displacement_vector(
-            acceleration=acceleration[2]
-        ).reshape(-1, self.n_points)
+            if plane == "xy":
+                self.write_image(x, y, image_path)
+            elif plane == "yz":
+                self.write_image(y, z, image_path)
+            elif plane == "zx":
+                self.write_image(z, x, image_path)
+            else:
+                pass
 
-        for i in range(x.shape[0]):
-            for plane in SpatialProjection.projection_planes:
-                image_name = f"{image_prefix}_{i:0>3d}_{plane}.jpg"
-                image_path = os.path.join(image_dir, image_name)
-
-                if plane == "xy":
-                    self.write_image(x[i, :], y[i, :], image_path)
-                elif plane == "yz":
-                    self.write_image(y[i, :], z[i, :], image_path)
-                elif plane == "zx":
-                    self.write_image(z[i, :], x[i, :], image_path)
-                else:
-                    pass
-
-                image_names.append(
-                    os.path.join(image_dir, image_name)
-                )
+            image_names.append(
+                os.path.join(image_dir, image_name)
+            )
 
         return image_names

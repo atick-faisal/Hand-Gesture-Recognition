@@ -8,7 +8,6 @@ class ConvBlock2D(models.Model):
         base_model: models.Model
     ):
         super().__init__()
-        self.input_ = layers.Input(shape=(img_size, img_size))
         self.preprocess = layers.experimental.preprocessing.Rescaling(
             scale=1.0/127.5,
             offset=-1
@@ -17,10 +16,9 @@ class ConvBlock2D(models.Model):
         self.base_model.trainable = False
         self.global_average = layers.GlobalAveragePooling2D()
 
-    def call(self, x):
-        x = self.input_(x)
-        x = self.preprocess(x)
+    def call(self, inputs):
+        x = self.preprocess(inputs)
         x = self.base_model(x)
-        x = self.global_average(x)
+        output = self.global_average(x)
 
-        return x
+        return models.Model(inputs, output)
