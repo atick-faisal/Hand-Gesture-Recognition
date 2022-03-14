@@ -11,6 +11,7 @@ from utils import GDriveDownloader
 from utils import SpatialProjection
 from utils import preposses_data
 from utils import clean_dir
+from utils import load_ds
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -39,11 +40,12 @@ with Progress() as progress:
         total=(25 * 16)  # n_users * n_gestures
     )
 
-    clean_dir(config["image_dir"])
+    # clean_dir(config["image_dir"])
 
     subjects = []
     labels = []
-    images = []
+    images = np.array([], dtype="<U32")
+    data_channels = np.array([], dtype="float32")
 
     for u_idx, user in enumerate(config["users"]):
         for g_idx, gesture in enumerate(config["dynamic_gestures"]):
@@ -52,6 +54,10 @@ with Progress() as progress:
             )
             data = pd.read_csv(path)
             channels = preposses_data(data)
+            if data_channels.size == 0:
+                data_channels = channels
+            else:
+                data_channels = np.vstack((data_channels, channels))
 
             accx = channels[:, :, 5]
             accy = channels[:, :, 6]
@@ -66,9 +72,9 @@ with Progress() as progress:
             )
 
             n = channels.shape[0]
-            subjects.append([user] * n)
-            labels.append([gesture] * n)
-            images.append(img_files)
+            subjects += ([user] * n)
+            labels += ([gesture] * n)
+            images = np.append(images, img_files)
 
             progress.update(
                 task_id=task,
@@ -78,10 +84,11 @@ with Progress() as progress:
             )
 
 
-# ds = tf.data.Dataset.from_tensor_slices(
-#     tuple(np.split(channels, 8, axis=2))
-# )
+print(images.shape)
 
-# ds.element_spec
-
-# print(channels.shape)
+load_ds(
+    test_subjects=["001"],
+    data_channels=data_channels,
+    subjects=subjects,
+    images=images
+)

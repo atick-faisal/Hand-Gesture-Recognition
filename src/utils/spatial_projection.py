@@ -65,19 +65,19 @@ class SpatialProjection:
             acceleration=acceleration[2]
         ).reshape(-1, self.n_points)
 
-        for plane in SpatialProjection.projection_planes:
-            for i in range(x.shape[0]):
+        for i in range(x.shape[0]):
+            for plane in SpatialProjection.projection_planes:
                 image_name = f"{image_prefix}_{i:0>3d}_{plane}.jpg"
                 image_path = os.path.join(image_dir, image_name)
 
-                if plane == "xy":
-                    self.write_image(x[i, :], y[i, :], image_path)
-                elif plane == "yz":
-                    self.write_image(y[i, :], z[i, :], image_path)
-                elif plane == "zx":
-                    self.write_image(z[i, :], x[i, :], image_path)
-                else:
-                    pass
+                # if plane == "xy":
+                #     self.write_image(x[i, :], y[i, :], image_path)
+                # elif plane == "yz":
+                #     self.write_image(y[i, :], z[i, :], image_path)
+                # elif plane == "zx":
+                #     self.write_image(z[i, :], x[i, :], image_path)
+                # else:
+                #     pass
 
                 image_names.append(image_name)
 
