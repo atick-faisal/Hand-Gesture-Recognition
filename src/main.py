@@ -1,16 +1,14 @@
-from model import ProjectionNet
-from utils import DataLoader
-from utils import SpatialProjection
-from utils import GDriveDownloader
 import os
 import json
-
-import numpy as np
-import pandas as pd
 import tensorflow as tf
 
 from rich.progress import Progress
 from tensorflow.keras import applications, losses, optimizers
+
+from model import ProjectionNet
+from utils import DataLoader
+from utils import SpatialProjection
+from utils import GDriveDownloader
 
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
