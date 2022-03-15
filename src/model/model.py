@@ -15,6 +15,7 @@ class ProjectionNet():
         self.img_size = img_size
         self.segment_len = segment_len
         self.base_model = base_model
+        self.base_model.trainable = False
 
         self.dropout = layers.Dropout(0.5)
 

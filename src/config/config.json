@@ -6,12 +6,14 @@
     "imu_cutoff": 7,
     "batch_size": 16,
     "learning_rate": 3e-4,
-    "n_epochs": 300,
-    "img_size": 224,
+    "n_epochs": 3,
+    "img_size": 160,
 
     "data_dir": "../data/asl/raw/",
     "images_dir": "../data/asl/images/",
     "channels_dir": "../data/asl/channels/",
+    "logs_dir": "../logs/tb/",
+    "models_dir": "../models/loocv/",
     "dataset_id": "1p0CSRb9gax0sKqdyzOYVt-BXvZ4GtrBv",
 
     "users": [

@@ -63,12 +63,6 @@ dataloader.extract_channels(
 
 # dataloader.generate_projection_images(projection)
 
-train_ds, test_ds = dataloader.load_ds(
-    test_subjects=["001"],
-    image_shape=(config["img_size"], config["img_size"]),
-    batch_size=config["batch_size"]
-)
-
 base_model = applications.MobileNetV2(
     input_shape=(config["img_size"], config["img_size"], 3),
     include_top=False,
@@ -95,10 +89,39 @@ model.compile(
     metrics=["accuracy"]
 )
 
-# model.summary()
-
-model.fit(
-    train_ds,
-    batch_size=config["batch_size"],
-    epochs=config["n_epochs"]
+model.summary()
+model.save_weights(
+    os.path.join(config["models_dir"], "initial_weights")
 )
+
+for test_user in config["users"]:
+    print("===========================================")
+    print(f"                  {test_user}")
+    print("===========================================")
+    tb_callback = tf.keras.callbacks.TensorBoard(
+        log_dir=config["logs_dir"] + test_user,
+        histogram_freq=1,
+        update_freq=1
+    )
+    train_ds, test_ds = dataloader.load_ds(
+        test_subjects=[test_user],
+        image_shape=(config["img_size"], config["img_size"]),
+        batch_size=config["batch_size"]
+    )
+    model.load_weights(
+        os.path.join(config["models_dir"], "initial_weights")
+    )
+
+    model.fit(
+        train_ds,
+        batch_size=config["batch_size"],
+        epochs=config["n_epochs"],
+        callbacks=[tb_callback]
+    )
+
+    model.evaluate(test_ds)
+    model.save_weights(
+        os.path.join(config["models_dir"], test_user)
+    )
+
+    tf.keras.backend.clear_session()
