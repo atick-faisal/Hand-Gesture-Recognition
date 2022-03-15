@@ -4,7 +4,7 @@
     "segment_len": 150,
     "line_width": 100,
     "imu_cutoff": 7,
-    "batch_size": 2,
+    "batch_size": 16,
     "learning_rate": 3e-4,
     "n_epochs": 300,
     "img_size": 224,

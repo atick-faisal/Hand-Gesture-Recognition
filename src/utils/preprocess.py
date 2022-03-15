@@ -12,7 +12,8 @@ def preposses_data(
     imu_cutoff: int = 3,
     window_len: int = 150
 ) -> np.ndarray:
-    data.fillna(0, inplace=True)
+    # ... normalization
+    data = (data - data.mean()) / data.std()
 
     # ... smoothing
     data['flex_1'] = data['flex_1'].rolling(3).median()
@@ -20,6 +21,8 @@ def preposses_data(
     data['flex_3'] = data['flex_3'].rolling(3).median()
     data['flex_4'] = data['flex_4'].rolling(3).median()
     data['flex_5'] = data['flex_5'].rolling(3).median()
+
+    data.fillna(0, inplace=True)
 
     flx1 = data['flex_1'].to_numpy().reshape(-1, window_len)
     flx2 = data['flex_2'].to_numpy().reshape(-1, window_len)

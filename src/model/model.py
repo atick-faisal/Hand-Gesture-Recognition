@@ -1,4 +1,4 @@
-from tensorflow.keras import layers, models
+from tensorflow.keras import layers, models, applications
 
 from .conv1d import ConvBlock1D
 from .conv2d import ConvBlock2D
@@ -28,6 +28,33 @@ class ProjectionNet():
             activation="softmax"
         )
 
+    def conv_block_1d(self):
+        inputs = layers.Input(shape=(self.segment_len, 1))
+        x = layers.BatchNormalization()(inputs)
+        x = layers.Conv1D(8, 3, activation="selu")(x)
+        x = layers.Conv1D(8, 3, activation="selu")(x)
+        x = layers.MaxPool1D(2)(x)
+        x = layers.Conv1D(16, 3, activation="selu")(x)
+        x = layers.Conv1D(16, 3, activation="selu")(x)
+        x = layers.MaxPool1D(2)(x)
+        x = layers.Flatten()(x)
+        output = layers.Dense(32)(x)
+
+        return inputs, output
+
+    def conv_block_2d(self):
+        # preprocess = layers.experimental.preprocessing.Rescaling(
+        #     scale=1.0/127.5,
+        #     offset=-1
+        # )
+        preprocess = applications.mobilenet_v2.preprocess_input
+        inputs = layers.Input(shape=(self.img_size, self.img_size, 3))
+        x = preprocess(inputs)
+        x = self.base_model(x, training=False)
+        output = layers.GlobalAveragePooling2D()(x)
+
+        return inputs, output
+
     def get_model(
         self,
         n_projections: int = 3,
@@ -38,19 +65,12 @@ class ProjectionNet():
         features = []
 
         for _ in range(n_projections):
-            input_2d, features_2d = ConvBlock2D(
-                img_size=self.img_size,
-                base_model=self.base_model
-            )
-
+            input_2d, features_2d = self.conv_block_2d()
             inputs.append(input_2d)
             features.append(features_2d)
 
         for _ in range(n_channels):
-            input_1d, features_1d = ConvBlock1D(
-                segment_len=self.segment_len
-            )
-
+            input_1d, features_1d = self.conv_block_1d()
             inputs.append(input_1d)
             features.append(features_1d)
 

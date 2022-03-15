@@ -74,6 +74,7 @@ class DataLoader:
                         advance=1
                     )
 
+            # np.nan_to_num(data_channels)
             np.save(os.path.join(
                 self.channels_dir, "channels.npy"
             ), data_channels)
@@ -145,7 +146,7 @@ class DataLoader:
     ) -> tf.Tensor:
         img = tf.io.read_file(file_path)
         img = tf.image.decode_jpeg(img, channels=3)
-        # img = tf.image.convert_image_dtype(img, tf.float32)
+        img = tf.image.convert_image_dtype(img, tf.float32)
         img = tf.image.resize(img, size=img_shape)
 
         return img
