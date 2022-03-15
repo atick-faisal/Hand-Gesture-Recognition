@@ -77,9 +77,10 @@ model = ProjectionNet(
     img_size=config["img_size"],
     segment_len=config["segment_len"],
     n_classes=len(gestures),
-    base_model=base_model,
+    base_model=base_model
+).get_model(
     n_projections=3,
     n_channels=5
 )
-model(next(iter(train_ds)))
+# model(next(iter(train_ds)))
 model.summary()

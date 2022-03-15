@@ -1,37 +1,36 @@
 from tensorflow.keras import layers, models
 
 
-class ConvBlock1D(models.Model):
-    def __init__(
-        self,
-        segment_len: int
-    ):
-        super().__init__()
-        self.cnn1 = layers.Conv1D(
-            filters=8,
-            kernel_size=3,
-            activation="relu",
-            padding="valid"
-        )
-        self.cnn2 = layers.Conv1D(
-            filters=16,
-            kernel_size=3,
-            activation="relu",
-            padding="valid"
-        )
-        self.pool = layers.MaxPool1D(2)
-        self.flatten = layers.Flatten()
-        self.mlp = layers.Dense(
-            units=50,
-            activation="relu"
-        )
+def ConvBlock1D(segment_len: int):
+    cnn1 = layers.Conv1D(
+        filters=8,
+        kernel_size=3,
+        activation="relu",
+        padding="valid"
+    )
 
-    def call(self, inputs):
-        x = self.cnn1(inputs)
-        x = self.pool(x)
-        x = self.cnn2(x)
-        x = self.pool(x)
-        x = self.flatten(x)
-        output = self.mlp(x)
+    cnn2 = layers.Conv1D(
+        filters=16,
+        kernel_size=3,
+        activation="relu",
+        padding="valid"
+    )
 
-        return models.Model(inputs, output)
+    pool = layers.MaxPool1D(2)
+
+    flatten = layers.Flatten()
+
+    mlp = layers.Dense(
+        units=50,
+        activation="relu"
+    )
+
+    input = layers.Input(shape=(segment_len, 1))
+    x = cnn1(input)
+    x = pool(x)
+    x = cnn2(x)
+    x = pool(x)
+    x = flatten(x)
+    output = mlp(x)
+
+    return input, output
