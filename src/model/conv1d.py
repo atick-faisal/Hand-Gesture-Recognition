@@ -2,6 +2,7 @@ from tensorflow.keras import layers, models
 
 
 def ConvBlock1D(segment_len: int):
+    bn = layers.BatchNormalization()
     cnn1 = layers.Conv1D(
         filters=8,
         kernel_size=3,
@@ -26,9 +27,12 @@ def ConvBlock1D(segment_len: int):
     )
 
     input = layers.Input(shape=(segment_len, 1))
-    x = cnn1(input)
+    x = bn(input)
+    x = cnn1(x)
+    # x = cnn2(x)
     x = pool(x)
     x = cnn2(x)
+    # x = cnn2(x)
     x = pool(x)
     x = flatten(x)
     output = mlp(x)

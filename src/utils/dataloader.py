@@ -196,8 +196,8 @@ class DataLoader:
         for subject in subjects:
             mask = np.append(mask, (subject in test_subjects))
 
-        train_channels = data_channels[~mask, :, :]
-        test_channels = data_channels[mask, :, :]
+        train_channels = data_channels[~mask, :, :5]
+        test_channels = data_channels[mask, :, :5]
 
         images_xy = images[0::3]
         images_yz = images[1::3]

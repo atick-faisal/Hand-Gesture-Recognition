@@ -12,7 +12,7 @@ def preposses_data(
     imu_cutoff: int = 3,
     window_len: int = 150
 ) -> np.ndarray:
-    data.fillna(method="bfill", inplace=True)
+    data.fillna(0, inplace=True)
 
     # ... smoothing
     data['flex_1'] = data['flex_1'].rolling(3).median()

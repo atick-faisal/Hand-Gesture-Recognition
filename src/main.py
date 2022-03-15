@@ -1,19 +1,23 @@
-import tensorflow as tf
-import numpy as np
+from model import ProjectionNet
+from utils import DataLoader
+from utils import SpatialProjection
+from utils import GDriveDownloader
 import os
 import json
 
+import numpy as np
 import pandas as pd
+import tensorflow as tf
 
 from rich.progress import Progress
+from tensorflow.keras import applications, losses, optimizers
 
-from utils import GDriveDownloader
-from utils import SpatialProjection
-from utils import DataLoader
 
-from model import ProjectionNet
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 EXPERIMENT = "DYNAMIC"  # STATIC or DYNAMIC
 
@@ -65,22 +69,36 @@ train_ds, test_ds = dataloader.load_ds(
     batch_size=config["batch_size"]
 )
 
-print(train_ds.element_spec)
-
-base_model = tf.keras.applications.MobileNetV2(
+base_model = applications.MobileNetV2(
     input_shape=(config["img_size"], config["img_size"], 3),
     include_top=False,
     weights='imagenet'
 )
 
-model = ProjectionNet(
+projection_net = ProjectionNet(
     img_size=config["img_size"],
     segment_len=config["segment_len"],
     n_classes=len(gestures),
     base_model=base_model
-).get_model(
+)
+
+model = projection_net.get_model(
     n_projections=3,
     n_channels=5
 )
-# model(next(iter(train_ds)))
-model.summary()
+
+loss = losses.SparseCategoricalCrossentropy(from_logits=False)
+optimizer = optimizers.Adam(learning_rate=config["learning_rate"])
+model.compile(
+    loss=loss,
+    optimizer=optimizer,
+    metrics=["accuracy"]
+)
+
+# model.summary()
+
+model.fit(
+    train_ds,
+    batch_size=config["batch_size"],
+    epochs=config["n_epochs"]
+)
