@@ -1,7 +1,4 @@
-from tensorflow.keras import layers, models, applications
-
-from .conv1d import ConvBlock1D
-from .conv2d import ConvBlock2D
+from tensorflow.keras import layers, models
 
 
 class ProjectionNet():
@@ -44,11 +41,10 @@ class ProjectionNet():
         return inputs, output
 
     def conv_block_2d(self):
-        # preprocess = layers.experimental.preprocessing.Rescaling(
-        #     scale=1.0/127.5,
-        #     offset=-1
-        # )
-        preprocess = applications.mobilenet_v2.preprocess_input
+        preprocess = layers.experimental.preprocessing.Rescaling(
+            scale=1.0/127.5,
+            offset=-1
+        )
         inputs = layers.Input(shape=(self.img_size, self.img_size, 3))
         x = preprocess(inputs)
         x = self.base_model(x, training=False)
