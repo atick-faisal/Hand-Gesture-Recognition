@@ -5,6 +5,7 @@ import tensorflow as tf
 
 from rich.progress import Progress
 
+from .dir_utils import clean_dir
 from .preprocess import preposses_data
 from .spatial_projection import SpatialProjection
 
@@ -32,8 +33,7 @@ class DataLoader:
         imu_cutoff: int,
         window_len: int
     ):
-        if not os.path.exists(self.channels_dir):
-            os.makedirs(self.channels_dir)
+        clean_dir(self.channels_dir)
 
         data_channels = np.array([], dtype="float64")
         labels = np.array([], dtype="uint8")
@@ -91,8 +91,7 @@ class DataLoader:
         self,
         projection: SpatialProjection
     ):
-        if not os.path.exists(self.images_dir):
-            os.makedirs(self.images_dir)
+        clean_dir(self.images_dir)
 
         data_channels = np.load(
             os.path.join(

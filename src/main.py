@@ -11,11 +11,12 @@ from utils import SpatialProjection
 from utils import GDriveDownloader
 
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-# physical_devices = tf.config.list_physical_devices('GPU')
-# tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# ... required for cuda errors
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 EXPERIMENT = "DYNAMIC"  # STATIC or DYNAMIC
 
@@ -40,10 +41,10 @@ projection = SpatialProjection(
 
 # ... Download files
 downloader = GDriveDownloader()
-# downloader.download(
-#     fid=config["dataset_id"],
-#     destination=config["data_dir"]
-# )
+downloader.download(
+    fid=config["dataset_id"],
+    destination=config["data_dir"]
+)
 
 dataloader = DataLoader(
     data_dir=config["data_dir"],
@@ -59,7 +60,7 @@ dataloader.extract_channels(
     window_len=config["segment_len"]
 )
 
-# dataloader.generate_projection_images(projection)
+dataloader.generate_projection_images(projection)
 
 base_model = applications.MobileNetV2(
     input_shape=(config["img_size"], config["img_size"], 3),

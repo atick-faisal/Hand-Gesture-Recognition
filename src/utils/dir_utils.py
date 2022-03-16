@@ -8,4 +8,4 @@ def clean_dir(path: os.PathLike):
     except:
         pass
 
-    os.mkdir(path)
+    os.makedirs(path)
