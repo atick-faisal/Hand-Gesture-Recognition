@@ -11,12 +11,12 @@ from utils import SpatialProjection
 from utils import GDriveDownloader
 
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+# os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 # ... required for cuda errors
-physical_devices = tf.config.list_physical_devices('GPU')
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# physical_devices = tf.config.list_physical_devices('GPU')
+# tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 EXPERIMENT = "DYNAMIC"  # STATIC or DYNAMIC
 
@@ -40,11 +40,11 @@ projection = SpatialProjection(
 )
 
 # ... Download files
-downloader = GDriveDownloader()
-downloader.download(
-    fid=config["dataset_id"],
-    destination=config["data_dir"]
-)
+# downloader = GDriveDownloader()
+# downloader.download(
+#     fid=config["dataset_id"],
+#     destination=config["data_dir"]
+# )
 
 dataloader = DataLoader(
     data_dir=config["data_dir"],
@@ -93,7 +93,7 @@ model.save_weights(
     os.path.join(config["models_dir"], "initial_weights")
 )
 
-for test_user in config["users"]:
+for test_user in ["001"]:  # config["users"]:
     print("===========================================")
     print(f"                  {test_user}")
     print("===========================================")
